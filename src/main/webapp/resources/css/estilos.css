@@ -1,0 +1,26 @@
+/*Centra la página web*/
+.resolucion {     
+    width: 800px; margin: 0 auto;            
+}
+
+.ui-widget {
+    font-size: 82% !important;
+}
+.ui-widget .ui-widget {
+    font-size: 100% !important;
+}
+
+body{
+	font-family: Lato; 
+}
+
+.custom-footer {
+	margin-top:5px;
+	background: black;
+	color:white;
+	font-weight: bold;
+	width: 100%;
+	height: 100px;
+	display:flex;
+	justify-content: center;
+}
