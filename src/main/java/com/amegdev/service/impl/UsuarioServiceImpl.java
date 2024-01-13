@@ -2,6 +2,7 @@ package com.amegdev.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -9,6 +10,7 @@ import javax.inject.Named;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.amegdev.dao.IUsuarioDAO;
+import com.amegdev.dto.PublicacionDTO;
 import com.amegdev.model.Usuario;
 import com.amgdev.service.IUsuarioService;
 
@@ -38,8 +40,14 @@ public class UsuarioServiceImpl implements IUsuarioService, Serializable {
 
 	@Override
 	public List<Usuario> listar() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return dao.listar()
+				.stream()
+				.map(u -> {
+					u.setContrasena("");
+					return u;
+				})
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -60,6 +68,24 @@ public class UsuarioServiceImpl implements IUsuarioService, Serializable {
 		}			
 		
 		return new Usuario();
+	}
+
+	@Override
+	public List<Usuario> leerPorNombreUsuarioLike(String us) throws Exception {
+		
+		return dao.leerPorNombreUsuarioLike(us)
+				.stream()
+				.map(u -> {
+					u.setContrasena("");
+					return u;
+				})
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<PublicacionDTO> publicacionesExport(String us) throws Exception {
+		
+		return dao.publicacionesExport(us);
 	}
 
 }

@@ -35,17 +35,17 @@ public class PersonaBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		this.listar();
-		this.tipoDialog = "Nueva Persona";
+		this.tipoDialog = "Nuevo";
 	}
 	
 	public void limpiarControles() {
 		this.persona = new Persona();
-		this.tipoDialog = "Nueva Persona";
+		this.tipoDialog = "Nuevo";
 	}
 	
 	public void mostrarData(Persona p) {
 		this.persona = p;
-		this.tipoDialog = "Modificar Persona";
+		this.tipoDialog = "Modificar";
 	}
 	
 	public void handleFileUpload(FileUploadEvent event) {

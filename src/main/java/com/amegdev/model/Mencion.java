@@ -24,7 +24,14 @@ public class Mencion implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "publicacion_id")
 	private Publicacion publicacion;
-	 	
+	
+	public Mencion() { }
+	
+	public Mencion(String texto, Publicacion publicacion) {
+		this.texto = texto;
+		this.publicacion = publicacion;
+	}
+
 	public Integer getId() {
 		return id;
 	}

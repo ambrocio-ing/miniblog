@@ -28,6 +28,10 @@ public class ImageServlet extends HttpServlet{
 				per.setId_persona(id);
 				per = service.obtenerPorId(per);
 				if(per.getFoto() != null) {
+					resp.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+					resp.setHeader("Pragma", "no-cache");
+					resp.setDateHeader("Expires", 0);
+					
 					resp.setContentType(getServletContext().getMimeType("image/png"));
 					resp.setContentLength(per.getFoto().length);
 					resp.getOutputStream().write(per.getFoto());

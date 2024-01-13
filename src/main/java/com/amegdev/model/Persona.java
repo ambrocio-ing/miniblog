@@ -1,6 +1,7 @@
 package com.amegdev.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "personas")
@@ -39,6 +41,9 @@ public class Persona implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "persona")
 	private Usuario usuario;
+	
+	@Transient
+	private boolean esSeguido;
 
 	public Integer getId_persona() {
 		return id_persona;
@@ -104,6 +109,30 @@ public class Persona implements Serializable {
 		this.usuario = usuario;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public boolean isEsSeguido() {
+		return esSeguido;
+	}
 
+	public void setEsSeguido(boolean esSeguido) {
+		this.esSeguido = esSeguido;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id_persona);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		return Objects.equals(id_persona, other.id_persona);
+	}
+
+	private static final long serialVersionUID = 1L;
 }

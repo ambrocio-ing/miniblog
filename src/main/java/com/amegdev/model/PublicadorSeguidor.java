@@ -14,37 +14,29 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "publicacion_seguidores")
-public class PublicacionSeguidor implements Serializable{
-
+public class PublicadorSeguidor implements Serializable {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(nullable = false)
-	private LocalDateTime fecha;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "publicador_id", nullable = false)
 	private Persona publicador;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "seguidor_id", nullable = false)
 	private Persona seguidor;
-	
+
+	@Column(name = "fecha", nullable = false)
+	private LocalDateTime fecha;
+
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
 	}
 
 	public Persona getPublicador() {
@@ -63,6 +55,13 @@ public class PublicacionSeguidor implements Serializable{
 		this.seguidor = seguidor;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public LocalDateTime getFecha() {
+		return fecha;
+	}
 
+	public void setFecha(LocalDateTime fecha) {
+		this.fecha = fecha;
+	}
+
+	private static final long serialVersionUID = 1L;
 }

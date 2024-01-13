@@ -62,6 +62,22 @@ public class Publicacion implements Serializable {
 		this.persona = persona;
 	}
 
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public List<Mencion> getMenciones() {
+		return menciones;
+	}
+
+	public void setMenciones(List<Mencion> menciones) {
+		this.menciones = menciones;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }

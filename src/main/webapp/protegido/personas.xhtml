@@ -10,7 +10,7 @@
 	<ui:define name="content">
 		<h1>Personas</h1>
 		<h:form id="frm" enctype="multipart/form-data">
-			<p:commandButton value="Nuevo" oncomplete="PF('wdlg').show()" actionListener="#{personaBean.limpiarControles()}" update="frm:dlg"/>
+			<p:commandButton value="Nuevo" oncomplete="PF('wdlg').show()" actionListener="#{personaBean.limpiarControles()}" update="frm:dlg" process="@this"/>
 			
 			<p:dataTable id="dt" var="e" value="#{personaBean.lista}"
 					paginator="true" rows="5"
@@ -38,7 +38,7 @@
 				</p:dataTable>
 			
 			<p:dialog id="dlg" widgetVar="wdlg" header="#{personaBean.tipoDialog}" modal="true" closeOnEscape="true" resizable="false" draggable="true">
-				<h:panelGrid columns="3">
+				<h:panelGrid id="pg" columns="3">
 					<p:outputLabel for="txtNombres" value="Nombres" />
 					<p:inputText id="txtNombres" value="#{personaBean.persona.nombres}" required="true"></p:inputText>
 					<p:message for="txtNombres" display="icon" />
@@ -63,13 +63,25 @@
 					<p:fileUpload id="puFoto" value="#{personaBean.foto}" mode="simple" skinSimple="true" label="Examinar..."/>
 					<p:message for="puFoto" display="icon"/>
 					
-					<p:graphicImage value="/imagen/#{personaBean.persona.id_persona}" width="120" height="120"/>
+					<h:graphicImage id="img" value="/imagen/#{personaBean.persona.id_persona}?t=#{now.time}" width="120" height="120"/>
 					
 				</h:panelGrid>
-				<p:commandButton value="Registrar" actionListener="#{personaBean.operar('R')}" ajax="true" oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()"></p:commandButton>
+				<p:commandButton value="Registrar" actionListener="#{personaBean.operar('R')}" ajax="true" 
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()" update="pg, dt" rendered="#{personaBean.tipoDialog == 'Nuevo'}"/>
+				
+				<p:commandButton value="Modificar" actionListener="#{personaBean.operar('M')}" ajax="true" 
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()" update="pg, dt" rendered="#{personaBean.tipoDialog == 'Modificar'}"/>
 			</p:dialog>
-		</h:form>
-		
+			
+			<p:commandLink value="Excel" ajax="false">
+				<p:dataExporter type="xls" target="dt" fileName="personas"></p:dataExporter>
+			</p:commandLink>
+			-		
+			<p:commandLink value="PDF" ajax="false">
+				<p:dataExporter type="pdf" target="dt" fileName="personas"></p:dataExporter>
+			</p:commandLink>
+			
+		</h:form>		
 	</ui:define>
 </ui:composition>
 

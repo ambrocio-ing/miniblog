@@ -15,7 +15,7 @@
 			<h:form>
 				<p:growl id="msgs" showDetail="true" autoUpdate="true"/>
 
-				<p:dataTable value="#{rolBean.roles}" var="e" editable="true" >
+				<p:dataTable id="dt" value="#{rolBean.roles}" var="e" editable="true" >
 				
 					<p:ajax event="rowEdit" listener="#{rolBean.onRowEdit}"/>
 					
@@ -40,7 +40,13 @@
 					</p:column>
 
 				</p:dataTable>		
-								
+				<!-- <p:commandLink value="Excel" ajax="false">
+					<p:dataExporter type="xls" target="dt" fileName="personas"></p:dataExporter>
+				</p:commandLink>
+				-		
+				<p:commandLink value="PDF" ajax="false">
+					<p:dataExporter type="pdf" target="dt" fileName="personas"></p:dataExporter>
+				</p:commandLink> -->		
 			</h:form>
 		</ui:define>
 	</ui:composition>

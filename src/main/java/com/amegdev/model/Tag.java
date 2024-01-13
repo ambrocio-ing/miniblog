@@ -26,6 +26,13 @@ public class Tag implements Serializable{
 	@JoinColumn(name = "publicacion_id")
 	private Publicacion publicacion;
 	
+	public Tag() { }
+	
+	public Tag(String texto, Publicacion publicacion) {
+		this.texto = texto;
+		this.publicacion = publicacion;
+	}
+
 	public Integer getId() {
 		return id;
 	}

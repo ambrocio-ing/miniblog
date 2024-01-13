@@ -1,0 +1,34 @@
+package com.amegdev.controller;
+
+import java.io.Serializable;
+
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+import com.amegdev.model.Usuario;
+
+@Named
+@ViewScoped
+public class MasterBean implements Serializable {
+
+	public void verificarSesion() throws Exception {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		try {
+			Usuario us = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
+			if(us ==null) {
+				context.getExternalContext().redirect("./../index.xhtml");
+			}
+			
+		} catch (Exception e) {
+			context.getExternalContext().redirect("./../index.xhtml");
+		}
+	}
+	
+	public void cerrarSesion() {
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+	}
+	
+}

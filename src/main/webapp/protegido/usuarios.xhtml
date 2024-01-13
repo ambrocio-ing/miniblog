@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/master.xhtml">
+
+	<ui:define name="content">
+		<h1>Usuarios</h1>
+
+		<h:form id="frmBuscar">
+			<p:growl id="msg" showDetail="true" sticky="true" showSummary="true" autoUpdate="true" />
+
+			<p:inputText id="txtBuscar" value="#{usuarioBean.texto}" />
+			<p:commandButton id="btnBuscar" value="BUSCAR" actionListener="#{usuarioBean.buscar()}" update="frm:dtUsuarios" ajax="false"/>
+		</h:form>
+		<br />
+		<h:form id="frm">
+
+			<p:dataTable id="dtUsuarios" value="#{usuarioBean.usuarios}"
+				var="usu" paginator="true" rows="4"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="ID" width="20">
+					<p:outputLabel value="#{usu.id}" />
+				</p:column>
+
+				<p:column headerText="Usuario">
+					<p:outputLabel value="#{usu.usuario}" />
+				</p:column>
+
+				<p:column headerText="Estado">
+					<p:outputLabel value="#{usu.estado == '1' ? 'Activo' : 'Inactivo'}" />
+				</p:column>
+
+				<p:column headerText="Acciones" width="50">
+					<p:commandLink actionListener="#{usuarioBean.editar(usu)}" oncomplete="PF('wdlg').show()" update="dlg" immediate="true" process="@this">
+						<p:graphicImage library="images" name="edit.jpg" />
+					</p:commandLink>
+				</p:column>
+
+			</p:dataTable>		
+
+		</h:form>
+		<br />
+		<p:dialog id="dlg" widgetVar="wdlg" header="#{usuarioBean.modificando}" modal="true" closeOnEscape="true" resizable="false" draggable="true">
+			<h:form>
+				<h:panelGrid id="pgUsuario" columns="4">
+					<p:outputLabel for="txtUs" value="Usuario" />
+					<p:inputText id="txtUs" value="#{usuarioBean.us.usuario}" required="true" readonly="true" />
+					<p:message for="txtUs" display="icon" />
+					<p:outputLabel />
+
+					<p:outputLabel for="txtContrasena" value="Contraseña actual" />
+					<p:password id="txtContrasena" value="#{usuarioBean.us.contrasena}" required="true"/>
+					<p:commandButton id="btnVerificar" value="Verificar" actionListener="#{usuarioBean.verificar()}" update="frmContrasena, frmBuscar:msg" ajax="true"/>
+					<p:outputLabel />
+					
+				</h:panelGrid>
+			</h:form>
+			
+			<h:form id="frmContrasena">
+				<h:panelGrid id="pgUsuario" columns="4">		
+				 
+					<p:outputLabel for="txtNContrasena" value="Nueva contraseña" />
+					<p:password id="txtNContrasena" value="#{usuarioBean.NContrasena}" required="true" match="txtN_Contrasena"
+						validatorMessage="Contraseñas no coinciden" label="Password 1" />
+					<p:message for="txtNContrasena" display="text" />
+					<p:outputLabel />
+
+					<p:outputLabel for="txtN_Contrasena" value="Nueva contraseña" />
+					<p:password id="txtN_Contrasena" value="#{usuarioBean.NContrasena}" required="true" label="Password 2" />
+					<p:outputLabel />
+					<p:outputLabel />
+					
+				</h:panelGrid>
+				<br/>
+				<p:commandButton value="Acepar"
+					actionListener="#{usuarioBean.aceptar()}" ajax="true"
+					oncomplete="if(args &amp;&amp; !args.validationFailed) PF('wdlg').hide()" update="frm:dtUsuarios, frmBuscar:msg" rendered="#{usuarioBean.correcto == true}" />
+				-
+				<p:commandButton value="Cancelar" immediate="true" actionListener="#{usuarioBean.cancelar()}" ajax="true" oncomplete="PF('wdlg').hide()" />
+			</h:form>	
+			
+		</p:dialog>
+		
+		<br />
+		<h:form>
+			<p:commandButton value="Exportar" action="#{usuarioBean.exportarPublicaciones()}" ajax="false"/>
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+
+</html>

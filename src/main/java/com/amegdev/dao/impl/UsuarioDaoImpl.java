@@ -3,6 +3,7 @@ package com.amegdev.dao.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -11,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.amegdev.dao.IUsuarioDAO;
+import com.amegdev.dto.PublicacionDTO;
 import com.amegdev.model.Usuario;
 
 @Stateless
@@ -85,6 +87,39 @@ public class UsuarioDaoImpl implements IUsuarioDAO, Serializable {
 			usuario = lista.get(0);
 		
 		return usuario;
+	}
+
+	@Override
+	public List<Usuario> leerPorNombreUsuarioLike(String us) throws Exception {
+		
+		List<Usuario> lista = new ArrayList<>();
+		Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.usuario like ?1");
+		query.setParameter(1, "%" + us + "%");
+		lista = (List<Usuario>) query.getResultList();
+		
+		return lista;
+	}
+
+	@Override
+	public List<PublicacionDTO> publicacionesExport(String us) throws Exception {
+		List<PublicacionDTO> pubs = new ArrayList<>();
+		Query query = em.createNativeQuery("call spListarPublicaciones_v2(?1)");
+		query.setParameter(1, us);
+		
+		List<Object[]> objs = query.getResultList();
+		
+		if(objs != null && !objs.isEmpty()) {
+			objs.forEach(obj -> {
+				String nombres = obj[0] != null ? String.valueOf(obj[0]) : "";
+				String apellidos = obj[0] != null ? String.valueOf(obj[1]) : "";
+				String usuario = obj[2] != null ? String.valueOf(obj[2]): "";
+				String cuerpo = obj[3] != null ? String.valueOf(obj[3]) : "";
+				
+				pubs.add(new PublicacionDTO(nombres, apellidos, usuario, cuerpo));
+			});
+		}		
+				
+		return pubs;
 	}
 
 }
